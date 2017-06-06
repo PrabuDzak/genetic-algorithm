@@ -71,7 +71,7 @@ namespace GeneticAlgo
                 new City(4, 5),
                 new City(0, 0),
                 new City(3, 10),
-                new City(1, -1),
+                new City(1, -4),
                 new City(2, -2),
                 new City(4, -3),
             });
@@ -79,7 +79,7 @@ namespace GeneticAlgo
             City[] case2 = (new City[]
             {
                 new City(8,4),
-                new City(4,4),
+                new City(-4,4),
                 new City(0,0),
                 new City(12,8),
                 new City(8,6)
@@ -89,7 +89,7 @@ namespace GeneticAlgo
 
             mapFactory.SetRandomSeed(4);
 
-            ga = new GeneticAlgorithm<Map>(mapFactory, 50, 0.05f);
+            ga = new GeneticAlgorithm<Map>(mapFactory, 50, 0.04f);
         }
 
         private void button1_Click(object sender, EventArgs e)

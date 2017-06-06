@@ -41,6 +41,7 @@ namespace GeneticAlgo
     {
         private City[] cities;
         private int[] m_roadConnection;
+        private float[] m_roadConnectionDistance;
 
         public ChromosomeFactory<Map> factory { set; private get; }
         public float roadCost
@@ -48,18 +49,10 @@ namespace GeneticAlgo
             get
             {
                 float road = 0;
-
                 for (int i = 0; i < roadConnection.Length; i++)
                 {
-                    if (roadConnection[i] == 0) continue;
-
-                    City cityA, cityB;
-
-                    GetCitiesByConnectionIndex(i, out cityA, out cityB);
-
-                    road += cityA.Distance(cityB);
+                    road += roadConnection[i] * m_roadConnectionDistance[i];
                 }
-
                 return road;
             }
         }
@@ -81,6 +74,13 @@ namespace GeneticAlgo
         {
             this.cities = cities;
             roadConnection = new int[MaxConnectionCount(cities.Length - 1)];
+            m_roadConnectionDistance = new float[roadConnection.Length];
+            for (int i = 0; i < roadConnection.Length; i++)
+            {
+                City cityA, cityB;
+                GetCitiesByConnectionIndex(i, out cityA, out cityB);
+                m_roadConnectionDistance[i] = cityA.Distance(cityB);
+            }
         }
 
         public void RandomizeConnection(Random random)
@@ -137,6 +137,13 @@ namespace GeneticAlgo
                     SetConnectionValue(i, roadConnection[i] == 0 ? 1 : 0);
                 }
             }
+        }
+
+        public Map Copy()
+        {
+            Map map = factory.MakeOne();
+            map.roadConnection = (int[])this.roadConnection.Clone();
+            return map;
         }
 
         // Helper
@@ -253,15 +260,6 @@ namespace GeneticAlgo
                     gl.End();
                 }
             }
-        }
-
-        // Copy
-
-        public Map Copy()
-        {
-            Map map = factory.MakeOne();
-            map.roadConnection = (int[])this.roadConnection.Clone();
-            return map;
         }
     }
 

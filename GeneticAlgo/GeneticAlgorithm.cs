@@ -154,5 +154,6 @@ namespace GeneticAlgo
         float Fitness { get; }
         T Crossover(Random random, T partner);
         void Mutate(Random random, float mutationRate);
+        T Copy();
     }
 }
